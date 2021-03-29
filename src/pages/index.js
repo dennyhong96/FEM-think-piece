@@ -1,3 +1,5 @@
-export default function CustomPaginationActionsTable() {
-	return <h1>Hello</h1>;
+import Application from "@components/Application";
+
+export default function Home() {
+	return <Application />;
 }
