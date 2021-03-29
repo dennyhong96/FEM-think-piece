@@ -9,3 +9,5 @@ export const createPost = async post => {
 	const doc = await docRef.get();
 	return { id: doc.id, ...doc.data() };
 };
+
+export const removePost = async postId => db.collection("posts").doc(postId).delete();

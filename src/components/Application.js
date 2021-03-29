@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { createPost, listPosts } from "@lib/api";
+import { createPost, listPosts, removePost } from "@lib/api";
 import Posts from "@components/Posts";
 
 const Application = () => {
@@ -20,10 +20,15 @@ const Application = () => {
 		setPosts(prev => [newPost, ...prev]);
 	};
 
+	const handleRemove = async postId => {
+		await removePost(postId);
+		setPosts(prev => prev.filter(post => post.id !== postId));
+	};
+
 	return (
 		<main className="Application">
 			<h1>Think Piece</h1>
-			<Posts posts={posts} onCreate={handleCreate} />
+			<Posts posts={posts} onCreate={handleCreate} handleRemove={handleRemove} />
 		</main>
 	);
 };
