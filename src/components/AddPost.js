@@ -3,8 +3,10 @@ import React, { Component } from "react";
 class AddPost extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = { title: "", content: "" };
+
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	handleChange(event) {

@@ -7,7 +7,7 @@ const Posts = ({ posts, onCreate }) => {
 		<section className="Posts">
 			<AddPost onCreate={onCreate} />
 			{posts.map(post => (
-				<Post {...post} key={post.id} />
+				<Post key={post.id} {...post} />
 			))}
 		</section>
 	);

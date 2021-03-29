@@ -49,6 +49,7 @@ const GlobalStyles = createGlobalStyle`
   button,
   input[type='submit'],
   .button {
+    cursor: pointer;
     display: block;
     width: 100%;
     font-size: 1.1em;
