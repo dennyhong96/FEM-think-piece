@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { listPosts } from "@lib/api";
+import { createPost, listPosts } from "@lib/api";
 import Posts from "@components/Posts";
 
 const Application = () => {
@@ -15,8 +15,9 @@ const Application = () => {
 
 	console.log({ posts });
 
-	const handleCreate = post => {
-		setPosts(prev => [post, ...prev]);
+	const handleCreate = async post => {
+		const newPost = await createPost(post);
+		setPosts(prev => [newPost, ...prev]);
 	};
 
 	return (
