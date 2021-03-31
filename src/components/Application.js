@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import { db, auth } from "@lib/firebase";
 import listDocsFromSnapshots from "@utils/listDocsFromSnapshots";
-import Posts from "@components/Posts";
 import Authentication from "@components/Authentication";
+import Posts from "@components/Posts";
 
 const Application = () => {
 	const [posts, setPosts] = useState([]);
@@ -25,7 +25,6 @@ const Application = () => {
 		const unsubscribe = auth.onAuthStateChanged(user => {
 			if (user) {
 				// signed in
-				console.log(user);
 				setUser({
 					uid: user.uid,
 					displayName: user.displayName,
@@ -43,6 +42,7 @@ const Application = () => {
 	}, []);
 
 	console.log({ posts });
+	console.log({ user });
 
 	return (
 		<main className="Application">
