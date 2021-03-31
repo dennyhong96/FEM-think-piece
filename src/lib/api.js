@@ -1,5 +1,4 @@
 import { db } from "@lib/firebase";
-
 import listDocsFromSnapshots from "@utils/listDocsFromSnapshots";
 
 export const listPosts = () => db.collection("posts").get().then(listDocsFromSnapshots);
@@ -11,3 +10,9 @@ export const createPost = async post => {
 };
 
 export const removePost = async postId => db.collection("posts").doc(postId).delete();
+
+export const increaseStars = ({ id, stars }) => {
+	db.collection("posts")
+		.doc(id)
+		.update({ stars: stars + 1 });
+};

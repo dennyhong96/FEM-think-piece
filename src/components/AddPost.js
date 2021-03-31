@@ -18,7 +18,7 @@ const AddPost = () => {
 				email: "steve@mailinator.com",
 				photoURL: "http://placekitten.com/g/200/200",
 			},
-			favorites: 0,
+			stars: 0,
 			comments: 0,
 			createdAt: new Date(),
 		};

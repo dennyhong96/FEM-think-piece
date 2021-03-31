@@ -1,12 +1,8 @@
 import moment from "moment";
 
-import { removePost } from "@lib/api";
+import { increaseStars, removePost } from "@lib/api";
 
 const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
-	const handleRemove = async postId => {
-		await removePost(postId);
-	};
-
 	return (
 		<article className="Post">
 			<div className="Post--content">
@@ -31,8 +27,10 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
 					<p>{moment(createdAt).calendar()}</p>
 				</div>
 				<div>
-					<button className="star">Star</button>
-					<button className="delete" onClick={handleRemove.bind(this, id)}>
+					<button className="star" onClick={increaseStars.bind(this, { id, stars })}>
+						Star
+					</button>
+					<button className="delete" onClick={removePost.bind(this, id)}>
 						Delete
 					</button>
 				</div>
