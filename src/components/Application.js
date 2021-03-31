@@ -1,34 +1,28 @@
 import { useEffect, useState } from "react";
 
-import { createPost, listPosts, removePost } from "@lib/api";
+import { db } from "@lib/firebase";
+import listDocsFromSnapshots from "@utils/listDocsFromSnapshots";
 import Posts from "@components/Posts";
 
 const Application = () => {
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
-		(async () => {
-			const posts = await listPosts();
+		const unsubscribe = db.collection("posts").onSnapshot(snapshots => {
+			const posts = listDocsFromSnapshots(snapshots);
 			setPosts(posts);
-		})();
+		});
+
+		// Clean up
+		return unsubscribe;
 	}, []);
 
 	console.log({ posts });
 
-	const handleCreate = async post => {
-		const newPost = await createPost(post);
-		setPosts(prev => [newPost, ...prev]);
-	};
-
-	const handleRemove = async postId => {
-		await removePost(postId);
-		setPosts(prev => prev.filter(post => post.id !== postId));
-	};
-
 	return (
 		<main className="Application">
 			<h1>Think Piece</h1>
-			<Posts posts={posts} onCreate={handleCreate} handleRemove={handleRemove} />
+			<Posts posts={posts} />
 		</main>
 	);
 };

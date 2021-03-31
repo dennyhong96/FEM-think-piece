@@ -1,8 +1,12 @@
-import React from "react";
-
 import moment from "moment";
 
-const Post = ({ id, title, content, user, createdAt, stars, comments, onRemove }) => {
+import { removePost } from "@lib/api";
+
+const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
+	const handleRemove = async postId => {
+		await removePost(postId);
+	};
+
 	return (
 		<article className="Post">
 			<div className="Post--content">
@@ -28,7 +32,7 @@ const Post = ({ id, title, content, user, createdAt, stars, comments, onRemove }
 				</div>
 				<div>
 					<button className="star">Star</button>
-					<button className="delete" onClick={() => onRemove(id)}>
+					<button className="delete" onClick={handleRemove.bind(this, id)}>
 						Delete
 					</button>
 				</div>

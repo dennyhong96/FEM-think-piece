@@ -1,24 +1,13 @@
-import React, { Component } from "react";
+import { useState } from "react";
 
-class AddPost extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { title: "", content: "" };
+import { createPost } from "@lib/api";
 
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-	}
+const AddPost = () => {
+	const [title, setTitle] = useState("");
+	const [content, setContent] = useState("");
 
-	handleChange(event) {
-		const { name, value } = event.target;
-		this.setState({ [name]: value });
-	}
-
-	handleSubmit(event) {
-		event.preventDefault();
-
-		const { onCreate } = this.props;
-		const { title, content } = this.state;
+	const handleSubmit = async evt => {
+		evt.preventDefault();
 
 		const post = {
 			title,
@@ -34,33 +23,31 @@ class AddPost extends Component {
 			createdAt: new Date(),
 		};
 
-		onCreate(post);
+		await createPost(post);
 
-		this.setState({ title: "", content: "" });
-	}
+		setTitle("");
+		setContent("");
+	};
 
-	render() {
-		const { title, content } = this.state;
-		return (
-			<form onSubmit={this.handleSubmit} className="AddPost">
-				<input
-					type="text"
-					name="title"
-					placeholder="Title"
-					value={title}
-					onChange={this.handleChange}
-				/>
-				<input
-					type="text"
-					name="content"
-					placeholder="Body"
-					value={content}
-					onChange={this.handleChange}
-				/>
-				<input className="create" type="submit" value="Create Post" />
-			</form>
-		);
-	}
-}
+	return (
+		<form onSubmit={handleSubmit} className="AddPost">
+			<input
+				type="text"
+				name="title"
+				placeholder="Title"
+				value={title}
+				onChange={evt => setTitle(evt.target.value)}
+			/>
+			<input
+				type="text"
+				name="content"
+				placeholder="Body"
+				value={content}
+				onChange={evt => setContent(evt.target.value)}
+			/>
+			<input className="create" type="submit" value="Create Post" />
+		</form>
+	);
+};
 
 export default AddPost;
