@@ -1,10 +1,12 @@
 import { useState } from "react";
 
 import { createPost } from "@lib/api";
+import { auth } from "@lib/firebase";
 
 const AddPost = () => {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
+	const { uid, email, displayName, photoURL } = auth.currentUser ?? {};
 
 	const handleSubmit = async evt => {
 		evt.preventDefault();
@@ -12,17 +14,11 @@ const AddPost = () => {
 		const post = {
 			title,
 			content,
-			user: {
-				uid: "1111",
-				displayName: "Steve Kinney",
-				email: "steve@mailinator.com",
-				photoURL: "http://placekitten.com/g/200/200",
-			},
+			user: { uid, displayName, email, photoURL },
 			stars: 0,
 			comments: 0,
 			createdAt: new Date(),
 		};
-
 		await createPost(post);
 
 		setTitle("");
