@@ -1,13 +1,22 @@
-import GlobalStyles from "@styles/globalStyles";
 import { ReduxProvider } from "src/redux";
+import useUser from "@hooks/useUser";
+import usePosts from "@hooks/usePosts";
+import GlobalStyles from "@styles/globalStyles";
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
+	useUser();
+	usePosts();
+
+	return <Component {...pageProps} />;
+}
+
+function AppWrapper({ Component, pageProps }) {
 	return (
 		<ReduxProvider>
 			<GlobalStyles />
-			<Component {...pageProps} />
+			<App Component={Component} pageProps={pageProps} />
 		</ReduxProvider>
 	);
 }
 
-export default MyApp;
+export default AppWrapper;
