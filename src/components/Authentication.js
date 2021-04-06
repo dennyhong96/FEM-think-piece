@@ -1,8 +1,9 @@
 import CurrentUser from "@components/CurrentUser";
 import SignInAndSignUp from "@components/SignInAndSignUp";
+import { useSelector } from "react-redux";
 
-const Authentication = ({ user, loading }) => {
-	if (loading) return null;
+const Authentication = () => {
+	const user = useSelector(({ user }) => user.user);
 
 	return <div>{user ? <CurrentUser {...user} /> : <SignInAndSignUp />}</div>;
 };

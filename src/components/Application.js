@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { subscribeToPosts } from "@redux/actions/post";
-import { auth, syncUserProfile } from "@lib/firebase";
+import { subscribeToAuth } from "@redux/actions/user";
 import Authentication from "@components/Authentication";
 import Posts from "@components/Posts";
 
 const Application = () => {
-	const [user, setUser] = useState(null);
 	const dispatch = useDispatch();
 
 	// Posts subscription
 	useEffect(() => {
 		let unsubscribe;
 		(async () => {
-			unsubscribe = await dispatch(subscribeToPosts()).then(unsubFn => (unsubscribe = unsubFn));
+			unsubscribe = await dispatch(subscribeToPosts()).then(fn => (unsubscribe = fn));
 		})();
 
 		// Clean up
@@ -23,16 +22,10 @@ const Application = () => {
 
 	// Auth subscription
 	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged(async user => {
-			if (user) {
-				// signed in, sync with DB
-				const userProfile = await syncUserProfile(user);
-				setUser(userProfile);
-			} else {
-				// not signed in
-				setUser(null);
-			}
-		});
+		let unsubscribe;
+		(async () => {
+			unsubscribe = await dispatch(subscribeToAuth()).then(fn => (unsubscribe = fn));
+		})();
 
 		// Clean up
 		return unsubscribe;
@@ -41,7 +34,7 @@ const Application = () => {
 	return (
 		<main className="Application">
 			<h1>Think Piece</h1>
-			<Authentication user={user} />
+			<Authentication />
 			<Posts />
 		</main>
 	);
