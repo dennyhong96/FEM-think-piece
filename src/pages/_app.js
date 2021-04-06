@@ -1,13 +1,12 @@
-import { Fragment } from "react";
-
 import GlobalStyles from "@styles/globalStyles";
+import { ReduxProvider } from "src/redux";
 
 function MyApp({ Component, pageProps }) {
 	return (
-		<Fragment>
+		<ReduxProvider>
 			<GlobalStyles />
 			<Component {...pageProps} />
-		</Fragment>
+		</ReduxProvider>
 	);
 }
 

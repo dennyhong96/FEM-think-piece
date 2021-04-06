@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
-import { db, auth, syncUserProfile } from "@lib/firebase";
-import listDocsFromSnapshots from "@utils/listDocsFromSnapshots";
+import { subscribeToPosts } from "@redux/actions/post";
+import { auth, syncUserProfile } from "@lib/firebase";
 import Authentication from "@components/Authentication";
 import Posts from "@components/Posts";
 
 const Application = () => {
-	const [posts, setPosts] = useState([]);
 	const [user, setUser] = useState(null);
+	const dispatch = useDispatch();
 
 	// Posts subscription
 	useEffect(() => {
-		const unsubscribe = db.collection("posts").onSnapshot(snapshots => {
-			const posts = listDocsFromSnapshots(snapshots);
-			setPosts(posts);
-		});
+		let unsubscribe;
+		(async () => {
+			unsubscribe = await dispatch(subscribeToPosts()).then(unsubFn => (unsubscribe = unsubFn));
+		})();
 
 		// Clean up
 		return unsubscribe;
@@ -41,7 +42,7 @@ const Application = () => {
 		<main className="Application">
 			<h1>Think Piece</h1>
 			<Authentication user={user} />
-			<Posts posts={posts} />
+			<Posts />
 		</main>
 	);
 };

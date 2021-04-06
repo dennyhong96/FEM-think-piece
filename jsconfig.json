@@ -7,6 +7,7 @@
 			"@hooks/*": ["./src/hooks/*"],
 			"@lib/*": ["./src/lib/*"],
 			"@pages/*": ["./src/pages/*"],
+			"@redux/*": ["./src/redux/*"],
 			"@styles/*": ["./src/styles/*"],
 			"@utils/*": ["./src/utils/*"]
 		}

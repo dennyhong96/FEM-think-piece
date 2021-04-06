@@ -1,8 +1,11 @@
 import React from "react";
 import Post from "./Post";
 import AddPost from "./AddPost";
+import { useSelector } from "react-redux";
 
-const Posts = ({ posts }) => {
+const Posts = () => {
+	const posts = useSelector(({ post }) => post.posts);
+
 	return (
 		<section className="Posts">
 			<AddPost />
