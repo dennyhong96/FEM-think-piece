@@ -10,10 +10,7 @@ const useUser = () => {
 	useEffect(() => {
 		let unsubscribe;
 		dispatch(subscribeToAuth()).then(fn => (unsubscribe = fn));
-		return () => {
-			console.log("about to unsubscribe from auth");
-			unsubscribe();
-		};
+		return unsubscribe;
 	}, []);
 
 	return null;

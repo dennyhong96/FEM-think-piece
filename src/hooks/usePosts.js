@@ -10,10 +10,7 @@ const usePosts = () => {
 	useEffect(() => {
 		let unsubscribe;
 		dispatch(subscribeToPosts()).then(fn => (unsubscribe = fn));
-		return () => {
-			console.log("about to unsubscribe from posts");
-			unsubscribe();
-		};
+		return unsubscribe;
 	}, []);
 
 	return null;

@@ -52,3 +52,10 @@ export const getUserProfile = async uid => {
 		console.error("Error getting user's Profile.", error.message);
 	}
 };
+
+export const updateUser = async ({ uid, ...props }) => {
+	await db
+		.collection("users")
+		.doc(uid)
+		.set({ ...props }, { merge: true });
+};
