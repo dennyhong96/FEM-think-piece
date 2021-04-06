@@ -1,13 +1,18 @@
 import { ReduxProvider } from "src/redux";
 import useUser from "@hooks/useUser";
 import usePosts from "@hooks/usePosts";
+import Layout from "@components/Layout";
 import GlobalStyles from "@styles/globalStyles";
 
 function App({ Component, pageProps }) {
 	useUser();
 	usePosts();
 
-	return <Component {...pageProps} />;
+	return (
+		<Layout>
+			<Component {...pageProps} />
+		</Layout>
+	);
 }
 
 function AppWrapper({ Component, pageProps }) {

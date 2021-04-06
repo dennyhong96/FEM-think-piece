@@ -1,5 +1,7 @@
-import { auth, syncUserProfile } from "@lib/firebase";
 import React, { useState } from "react";
+
+import { auth } from "@lib/firebase";
+import { syncUserProfile } from "@lib/api";
 
 const INITIAL_STATE = { displayName: "", email: "", password: "" };
 

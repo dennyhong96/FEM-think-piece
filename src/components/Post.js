@@ -1,8 +1,11 @@
 import moment from "moment";
 
 import { increaseStars, removePost } from "@lib/api";
+import { useSelector } from "react-redux";
 
 const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
+	const currentUser = useSelector(({ user }) => user.user);
+
 	return (
 		<article className="Post">
 			<div className="Post--content">
@@ -30,9 +33,11 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
 					<button className="star" onClick={increaseStars.bind(this, { id, stars })}>
 						Star
 					</button>
-					<button className="delete" onClick={removePost.bind(this, id)}>
-						Delete
-					</button>
+					{currentUser?.uid === user.uid && (
+						<button className="delete" onClick={removePost.bind(this, id)}>
+							Delete
+						</button>
+					)}
 				</div>
 			</div>
 		</article>

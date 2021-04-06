@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 import { createPost } from "@lib/api";
-import { auth } from "@lib/firebase";
+import { useSelector } from "react-redux";
 
 const AddPost = () => {
+	const user = useSelector(({ user }) => user.user);
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	const { uid, email, displayName, photoURL } = auth.currentUser ?? {};
 
 	const handleSubmit = async evt => {
 		evt.preventDefault();
@@ -14,7 +14,7 @@ const AddPost = () => {
 		const post = {
 			title,
 			content,
-			user: { uid, displayName, email, photoURL },
+			user,
 			stars: 0,
 			comments: 0,
 			createdAt: new Date(),

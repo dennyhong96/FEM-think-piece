@@ -33,37 +33,3 @@ export const signInWithGoogle = () => auth.signInWithPopup(googleAuthProvider);
 export const signOut = () => auth.signOut();
 
 export default firebase;
-
-export const syncUserProfile = async ({ uid, email, displayName, photoURL } = {}) => {
-	if (!uid) return; // Called without a user, when onAuthStateChanged fired from authenticatd to unauthenticated
-
-	// If user already in DB, return the user
-	const userDocRef = db.collection("users").doc(uid);
-	const userSnapshot = await userDocRef.get();
-
-	// User not in DB yet
-	if (!userSnapshot.exists) {
-		try {
-			const createdAt = Date.now();
-
-			// Store user into DB
-			await userDocRef.set({ email, displayName, photoURL, createdAt });
-		} catch (error) {
-			console.error("Error creating user's Profile.", error.message);
-		}
-	}
-
-	// return the user from DB
-	return await getUserProfile(uid);
-};
-
-export const getUserProfile = async uid => {
-	if (!uid) return null;
-
-	try {
-		const doc = await db.collection("users").doc(uid).get();
-		return { uid: doc.id, ...doc.data() };
-	} catch (error) {
-		console.error("Error getting user's Profile.", error.message);
-	}
-};

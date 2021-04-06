@@ -1,4 +1,5 @@
 import moment from "moment";
+import Link from "next/link";
 
 import { signOut } from "@lib/firebase";
 
@@ -8,7 +9,11 @@ const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
 			<div className="CurrentUser--profile">
 				{photoURL && <img src={photoURL} alt={displayName} />}
 				<div className="CurrentUser--information">
-					<h2>{displayName}</h2>
+					<Link href="/profile">
+						<a>
+							<h2>{displayName}</h2>
+						</a>
+					</Link>
 					<p className="email">{email}</p>
 					<p className="created-at">{moment(createdAt).calendar()}</p>
 				</div>

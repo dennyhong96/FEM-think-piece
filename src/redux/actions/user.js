@@ -1,4 +1,5 @@
-import { auth, syncUserProfile } from "@lib/firebase";
+import { auth } from "@lib/firebase";
+import { syncUserProfile } from "@lib/api";
 
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";

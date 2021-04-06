@@ -1,11 +1,5 @@
-import { Fragment } from "react";
-
-import Application from "@components/Application";
+import Posts from "@components/Posts";
 
 export default function Home() {
-	return (
-		<Fragment>
-			<Application />
-		</Fragment>
-	);
+	return <Posts />;
 }
