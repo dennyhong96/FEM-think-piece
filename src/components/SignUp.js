@@ -1,4 +1,4 @@
-import { auth } from "@lib/firebase";
+import { auth, syncUserProfile } from "@lib/firebase";
 import React, { useState } from "react";
 
 const INITIAL_STATE = { displayName: "", email: "", password: "" };
@@ -13,10 +13,9 @@ const SignUp = () => {
 
 	const handleSubmit = async evt => {
 		evt.preventDefault();
-		setState({ displayName: "", email: "", password: "" });
 		const { user } = await auth.createUserWithEmailAndPassword(email, password);
-		console.log("user", user);
-		user.updateProfile({ displayName });
+		syncUserProfile({ uid: user.uid, email: user.email, photoURL: user.photoURL, displayName });
+		setState({ displayName: "", email: "", password: "" });
 	};
 
 	return (
