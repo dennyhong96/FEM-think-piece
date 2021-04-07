@@ -47,7 +47,8 @@ exports.incrementCommentCount = functions.firestore
 
 		// Find the parent post of the new comment
 		const postRef = db.collection("posts").doc(postId);
-		const numComments = await postRef.get("numComments"); // Only get `numComments` field, instead of ...postRef.data()
+		const numCommentsSnapshot = await postRef.get("numComments"); // Only get `numComments` field, instead of ...postRef.data()
+		const numComments = numCommentsSnapshot.get("numComments");
 
 		return postRef.update({ numComments: numComments + 1 });
 	});
