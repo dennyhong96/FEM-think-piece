@@ -1,7 +1,8 @@
-import { POSTS_LOADED } from "../actions/post";
+import { COMMENTS_LOADED, POSTS_LOADED } from "../actions/post";
 
 const INITIAL_STATE = {
 	posts: [],
+	comments: {},
 };
 
 const postReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +12,17 @@ const postReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				posts: payload,
+			};
+		}
+
+		case COMMENTS_LOADED: {
+			const { postId, comments } = payload;
+			return {
+				...state,
+				comments: {
+					...state.comments,
+					[postId]: comments,
+				},
 			};
 		}
 

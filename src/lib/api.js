@@ -66,3 +66,11 @@ export const updateUser = async ({ uid, photo, ...props }) => {
 
 	await db.collection("users").doc(uid).set(updateObj, { merge: true });
 };
+
+export const createComment = async ({ postId, content, user }) => {
+	await db
+		.collection("posts")
+		.doc(postId)
+		.collection("comments")
+		.add({ content, user, createdAt: Date.now() });
+};

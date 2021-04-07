@@ -1,37 +1,33 @@
-import React, { Component } from "react";
+import { createComment } from "@lib/api";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
-class AddComment extends Component {
-	constructor(props) {
-		super(props);
+const AddComment = ({ postId }) => {
+	const [content, setContent] = useState("");
+	const user = useSelector(({ user }) => user.user);
 
-		this.state = { content: "" };
-	}
+	const handleChange = evt => {
+		setContent(evt.target.value);
+	};
 
-	handleChange(event) {
-		const { name, value } = event.target;
-		this.setState({ [name]: value });
-	}
+	const handleSubmit = async evt => {
+		evt.preventDefault();
+		await createComment({ postId, content, user });
+		setContent("");
+	};
 
-	handleSubmit(event) {
-		event.preventDefault();
-		this.setState({ content: "" });
-	}
-
-	render() {
-		const { content } = this.state;
-		return (
-			<form onSubmit={this.handleSubmit} className="AddComment">
-				<input
-					type="text"
-					name="content"
-					placeholder="Comment"
-					value={content}
-					onChange={this.handleChange}
-				/>
-				<input className="create" type="submit" value="Create Comment" />
-			</form>
-		);
-	}
-}
+	return (
+		<form onSubmit={handleSubmit} className="AddComment">
+			<input
+				type="text"
+				name="content"
+				placeholder="Comment"
+				value={content}
+				onChange={handleChange}
+			/>
+			<input className="create" type="submit" value="Create Comment" />
+		</form>
+	);
+};
 
 export default AddComment;

@@ -1,4 +1,5 @@
 import moment from "moment";
+import Link from "next/link";
 
 import { increaseStars, removePost } from "@lib/api";
 import { useSelector } from "react-redux";
@@ -9,7 +10,12 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
 	return (
 		<article className="Post">
 			<div className="Post--content">
-				<h3>{title}</h3>
+				<Link href={`/posts/${id}`} passHref>
+					<a>
+						<h3>{title}</h3>
+					</a>
+				</Link>
+
 				<div>{content}</div>
 			</div>
 			<div className="Post--meta">
