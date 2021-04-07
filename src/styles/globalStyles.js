@@ -160,6 +160,8 @@ const GlobalStyles = createGlobalStyle`
       flex: 1;
       margin-right: 1em;
       max-height: 150px;
+      max-width: 150px;
+      object-fit: cover;
     }
 
     h2 {

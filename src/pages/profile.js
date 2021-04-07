@@ -1,13 +1,14 @@
 import { updateUser } from "@lib/api";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
 	const user = useSelector(({ user }) => user.user);
-	const [{ displayName }, setState] = useState({
+	const [{ displayName, file }, setState] = useState({
 		displayName: user?.displayName ?? "",
 		file: null,
 	});
+	const fileInputRef = useRef();
 
 	const handleChange = evt => {
 		const { name, value } = evt.target;
@@ -22,7 +23,18 @@ const Profile = () => {
 
 	const handleSubmit = async evt => {
 		evt.preventDefault();
-		await updateUser({ uid: user.uid, displayName });
+		await updateUser({
+			uid: user.uid,
+			...(displayName && { displayName }),
+			...(file && { photo: file }),
+		});
+
+		if (!file) return;
+		setState(prev => ({
+			...prev,
+			file: null,
+		}));
+		fileInputRef.current.value = "";
 	};
 
 	return (
@@ -34,7 +46,7 @@ const Profile = () => {
 				onChange={handleChange}
 				placeholder="Enter a display name"
 			/>
-			<input type="file" name="file" onChange={handleFile} />
+			<input type="file" name="file" onChange={handleFile} ref={fileInputRef} />
 			<input type="submit" value="Update Profile" />
 		</form>
 	);

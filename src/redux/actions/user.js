@@ -26,6 +26,7 @@ export const subscribeToAuth = () => async dispatch => {
 			});
 
 			unsubFromProfileChange?.();
+			unsubFromProfileChange = null;
 		}
 	});
 

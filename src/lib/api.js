@@ -1,4 +1,4 @@
-import { db } from "@lib/firebase";
+import { db, storage } from "@lib/firebase";
 import listDocsFromSnapshots from "@utils/listDocsFromSnapshots";
 
 // Posts
@@ -53,9 +53,16 @@ export const getUserProfile = async uid => {
 	}
 };
 
-export const updateUser = async ({ uid, ...props }) => {
-	await db
-		.collection("users")
-		.doc(uid)
-		.set({ ...props }, { merge: true });
+export const updateUser = async ({ uid, photo, ...props }) => {
+	const updateObj = { ...props };
+
+	if (photo) {
+		const ext = photo.typt?.split("/")?.[1] ?? "png";
+		const photoRef = storage.ref().child(`profile/${uid}/${uid}.${ext}`); // Same object name overwrites each other
+		await photoRef.put(photo);
+		const imageSrc = await photoRef.getDownloadURL();
+		updateObj.photoURL = imageSrc;
+	}
+
+	await db.collection("users").doc(uid).set(updateObj, { merge: true });
 };
