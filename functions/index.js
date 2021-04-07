@@ -19,19 +19,38 @@ exports.getAllPosts = functions.https.onRequest(async (req, res) => {
 });
 
 // Sanitize post after creation/updates
-exports.sanitizePost = functions.firestore.document("posts/{postId}").onWrite(async change => {
-	if (!change.after.exists) return; // document deleted
+exports.sanitizePost = functions.firestore
+	.document("posts/{postId}")
+	.onWrite(async (change, context) => {
+		// `change` has before & after
+		if (!change.after.exists) return; // document deleted
 
-	const { content, isSanitized } = change.after.data();
+		const { content, isSanitized } = change.after.data();
 
-	// Use `isSanitized` to stop from function being called infinately
-	if (content && !isSanitized) {
-		return change.after.ref.update({
-			content: content.replace(/CoffeeScript/g, "**********"),
-			isSanitized: true,
-		});
-	}
+		// Use `isSanitized` to stop from sanitization being executed infinately
+		if (content && !isSanitized) {
+			return change.after.ref.update({
+				content: content.replace(/CoffeeScript/g, "**********"),
+				isSanitized: true,
+			});
+		}
 
-	// Always need to return in cloud functions
-	return null;
-});
+		// Always need to return in cloud functions
+		return null;
+	});
+
+// Update comment count of a post on comment creation
+exports.incrementCommentCount = functions.firestore
+	.document("posts/{postId}/comments/{commentId}")
+	.onCreate(async (snapshot, context) => {
+		const { postId, commentId } = context.params;
+
+		// Find the parent post of the new comment
+		const postRef = db.collection("posts").doc(postId);
+		const numComments = await postRef.get("numComments"); // Only get `numComments` field, instead of ...postRef.data()
+
+		return postRef.update({ numComments: numComments + 1 });
+	});
+
+// Also can listen to auth changes
+// - Create user document in DB after signing up

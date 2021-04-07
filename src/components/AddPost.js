@@ -16,7 +16,7 @@ const AddPost = () => {
 			content,
 			user,
 			stars: 0,
-			comments: 0,
+			numComments: 0,
 			createdAt: new Date(),
 		};
 		await createPost(post);
